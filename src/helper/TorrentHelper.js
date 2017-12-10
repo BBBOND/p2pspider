@@ -34,6 +34,7 @@ const scanAndSaveTorrent = (fileListPath) => {
     });
 };
 
+MongoUtil.connect();
 scanAndSaveTorrent();
 
 module.exports = {
