@@ -14,7 +14,7 @@ const getPath = (hash, hasSuffix) => {
 
 const saveTorrent = (hash, hasSuffix) => {
     let torrent = TorrentParseUtil(getPath(hash, hasSuffix));
-    torrent._id = hash;
+    torrent._id = torrent.infoHash;
     return MongoUtil.insertDocUnique(Torrent, torrent)
 };
 
