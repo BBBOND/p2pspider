@@ -52,7 +52,7 @@ class MongoUtil {
             });
             this.findDocsByQuery(schema, query).then(docs => {
                 if (docs.length > 0) {
-                    logger.info(`${doc[uniqueKeys[0]]} 已存在`);
+                    // logger.info(`${doc[uniqueKeys[0]]} 已存在`);
                     resolve({msg: `${doc[uniqueKeys[0]]} 已存在`})
                 } else {
                     let s = new schema(doc);
