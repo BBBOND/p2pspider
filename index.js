@@ -27,7 +27,7 @@ p2p.on('metadata', (metadata) => {
             return console.error(err);
         }
         let torrentFileListPath = path.join(__dirname, "torrentsList", moment().format('YYYY-MM-DD') + ".txt");
-        fs.appendFileSync(torrentFileListPath, metadata.infohash + ".torrent");
+        fs.appendFileSync(torrentFileListPath, metadata.infohash + ".torrent\n");
         // console.log(metadata.infohash + ".torrent has saved.");
     });
 });
