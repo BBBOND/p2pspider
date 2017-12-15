@@ -18,29 +18,34 @@ const saveTorrent = (hash, hasSuffix) => {
     return MongoUtil.insertDocUnique(Torrent, torrent)
 };
 
-const saveTorrentList = (torrentList) => {
+const saveTorrentList = async (torrentList) => {
     let fileName = torrentList.pop();
-    if (!!fileName) {
-        fileName.indexOf('.torrent') > 0 && saveTorrent(fileName, true).then(result => {
+    if (!!fileName && fileName.indexOf('.torrent') > 0) {
+        try {
+            await saveTorrent(fileName, true);
             logger.info(`${fileName} => ${!!result}`);
-            saveTorrentList(torrentList);
-        }).catch(async e => {
+            await saveTorrentList(torrentList);
+        } catch (e) {
             logger.error(e);
             MongoUtil.connect();
-            saveTorrentList(torrentList);
-        });
-    } else {
-        MongoUtil.close();
+            await saveTorrentList(torrentList);
+        }
     }
 };
 
-const scanAndSaveTorrent = (fileListPath) => {
-    fs.readdir(getParentPath(), (err, files) => {
+const scanAndSaveTorrent = () => {
+    fs.readdir(getParentPath(), async (err, files) => {
         if (err) {
             logger.error(err);
             return;
         }
-        saveTorrentList(files);
+        let length = files.length;
+        let page = Math.ceil(length / 2000);
+        for (let i = 0; i < page; i++) {
+            await saveTorrentList(files.slice(i * 2000, (i + 1) * 2000));
+            // console.log(files.slice(i * 2000, (i + 1) * 2000).length)
+        }
+        MongoUtil.close();
     });
 };
 
