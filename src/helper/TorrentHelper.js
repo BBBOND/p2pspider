@@ -22,7 +22,7 @@ const saveTorrentList = async (torrentList) => {
     let fileName = torrentList.pop();
     if (!!fileName && fileName.indexOf('.torrent') > 0) {
         try {
-            await saveTorrent(fileName, true);
+            let result = await saveTorrent(fileName, true);
             logger.info(`${fileName} => ${!!result}`);
             await saveTorrentList(torrentList);
         } catch (e) {
