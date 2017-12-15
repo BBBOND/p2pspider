@@ -22,7 +22,7 @@ const saveTorrentList = (torrentList) => {
     let fileName = torrentList.pop();
     if (!!fileName) {
         fileName.indexOf('.torrent') > 0 && saveTorrent(fileName, true).then(result => {
-            // logger.info(`${fileName} => ${!!result}`);
+            logger.info(`${fileName} => ${!!result}`);
             saveTorrentList(torrentList);
         }).catch(async e => {
             logger.error(e);

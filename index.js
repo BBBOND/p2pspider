@@ -5,6 +5,7 @@ let fs = require('fs');
 let path = require('path');
 let bencode = require('bencode');
 let P2PSpider = require('./lib');
+let moment = require('moment');
 
 const p2p = P2PSpider({
     nodesMaxSize: 400,
@@ -25,6 +26,8 @@ p2p.on('metadata', (metadata) => {
         if (err) {
             return console.error(err);
         }
+        let torrentFileListPath = path.join(__dirname, "torrentsList", moment().format('YYYY-MM-DD') + ".txt");
+        fs.appendFileSync(torrentFileListPath, metadata.infohash + ".torrent");
         // console.log(metadata.infohash + ".torrent has saved.");
     });
 });
