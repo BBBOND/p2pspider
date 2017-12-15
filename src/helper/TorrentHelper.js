@@ -23,7 +23,11 @@ const saveTorrentList = async (torrentList) => {
     if (!!fileName && fileName.indexOf('.torrent') > 0) {
         try {
             let result = await saveTorrent(fileName, true);
-            logger.info(`${fileName} => ${!!result}`);
+            if (result && result.msg) {
+                logger.info(result.msg);
+            } else {
+                logger.info(`${fileName} => ${!!result ? '保存成功' : '保存失败'}`);
+            }
             await saveTorrentList(torrentList);
         } catch (e) {
             logger.error(e);
@@ -40,10 +44,10 @@ const scanAndSaveTorrent = () => {
             return;
         }
         let length = files.length;
-        let page = Math.ceil(length / 2000);
+        let page = Math.ceil(length / 500);
         for (let i = 0; i < page; i++) {
-            await saveTorrentList(files.slice(i * 2000, (i + 1) * 2000));
-            // console.log(files.slice(i * 2000, (i + 1) * 2000).length)
+            await saveTorrentList(files.slice(i * 500, (i + 1) * 500));
+            console.log(`${i / page}%`);
         }
         MongoUtil.close();
     });
