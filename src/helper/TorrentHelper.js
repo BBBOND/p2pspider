@@ -28,6 +28,7 @@ const saveTorrentList = async (torrentList) => {
             } else {
                 logger.info(`${fileName} => ${!!result ? '保存成功' : '保存失败'}`);
             }
+            fs.unlinkSync(getParentPath() + fileName);
             await saveTorrentList(torrentList);
         } catch (e) {
             logger.error(e);
