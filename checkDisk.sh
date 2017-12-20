@@ -16,7 +16,8 @@ echo ${disk}
 percent=`df -P ${disk} | tail -1 | awk '{print $5 }' | cut -d'%' -f1`
 if [ "${percent}" -ge "${max}" ]; then
 	echo '磁盘告警'
-        pm2 stop all;
+        #pm2 stop all;
+	rm -f /home/p2pspider/.pm2/logs/*
 else
 	echo 磁盘占用 ${percent};
 fi;
